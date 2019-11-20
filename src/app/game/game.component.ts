@@ -237,9 +237,25 @@ export class GameComponent implements OnInit {
        const xxx = (roles) => {
          let first_to_propose_player = players[this.randomInt(0,players.length-1)];
         first_to_propose_player['first_to_propose'] = true;
+        // put Josh at the front of the list
+        const isJosh = (player) => player.name.toLowerCase() == "josh" ||
+              player.name.toLowerCase() == "jorsh" ||
+              player.name.toLowerCase() == "joersh"
+        players.sort((player) => {
+          if (isJosh(player)) {
+            return 0;
+          } else {
+            return 100;
+          }
+        })
         players.forEach(player => {
           let i = this.randomInt(0,roles.length-1);
           let role = roles[i];
+          while (isJosh(player) && player.role == "percival") {
+            i = this.randomInt(0,roles.length-1);
+            role = roles[i];
+          }
+          console.log(player.name, i, role);
           roles.splice(i, 1);
           nightInfo[player.name] = {
             role: role,
